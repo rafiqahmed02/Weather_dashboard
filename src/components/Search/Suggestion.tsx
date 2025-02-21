@@ -6,13 +6,15 @@ import { SuggestionItem } from './styled';
 interface ISuggestionProps {
   label: string;
   hideSuggestionFn: Function;
+  onSelect: () => void;
 }
 
 const Suggestion: React.FC<ISuggestionProps> = (props) => {
   const dispatch = useDispatch();
 
   const onClick = () => {
-    dispatch(fetchWeather(props.label.split(',')[0]));
+    props.onSelect(); // Updates search bar with city
+    dispatch(fetchWeather(props.label.split(',')[0])); // Fetch weather data
     setTimeout(() => {
       props.hideSuggestionFn();
     }, 400);

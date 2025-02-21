@@ -47,13 +47,16 @@ const weatherSlice = createSlice({
     builder
       .addCase(fetchWeather.fulfilled, (state, action) => {
         const res = transformWeatherData(action.payload);
-        state.weatherData = res.weather;
-        state.extendedWeatherData = res.forecast;
+        state.weatherData.main = { ...state.weatherData.main, ...res.weather.main };
+        state.weatherData.wind = { ...state.weatherData.wind, ...res.weather.wind };
+        state.weatherData.sys = { ...state.weatherData.sys, ...res.weather.sys };
+        state.weatherData.weather = { ...state.weatherData.weather, ...res.weather.weather };
+        state.weatherData.name = res.weather.name;
       })
-      .addCase(fetchWeather.rejected, (state, action) => {
+      .addCase(fetchWeather.rejected, (state) => {
         state.isError = true;
       });
-  },
+  }
 });
 
 export default weatherSlice.reducer;

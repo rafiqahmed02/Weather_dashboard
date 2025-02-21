@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ExtendedForecastData, WeatherData } from '../api/types';
-import { fetchExtendedForecastData, fetchWeatherData } from '../api/weather';
-import { kelvinToCelcius } from '../utils/unitConversion';
+import {  fetchWeatherData } from '../api/weather';
 import { setIsInitial, setIsLoading } from './reducers/appReducer';
 
 export const fetchWeather = createAsyncThunk(
@@ -10,14 +9,14 @@ export const fetchWeather = createAsyncThunk(
     dispatch(setIsLoading(true));
 
     try {
-      const res = await Promise.all([fetchWeatherData(city), fetchExtendedForecastData(city)]);
+      const res = await Promise.all([fetchWeatherData(city)]);
       dispatch(setIsLoading(false));
 
       if (res[0].cod === 200) {
         dispatch(setIsInitial(false));
         return res;
       }
-      return rejectWithValue(res[0].message);
+      
     } catch {
       dispatch(setIsLoading(false));
       return rejectWithValue('Error');
@@ -34,22 +33,25 @@ export const transformWeatherData = (
   const weather = res[0] as WeatherData;
   const forecast: ExtendedForecastData[] = [];
 
-  weather.weather = res[0].weather[0];
-  weather.main = {
-    ...weather.main,
-    temp: kelvinToCelcius(weather.main.temp),
-    feels_like: kelvinToCelcius(weather.main.feels_like),
-    temp_max: kelvinToCelcius(weather.main.temp_max),
-    temp_min: kelvinToCelcius(weather.main.temp_min),
-  };
-  weather.wind.speed = Math.round(weather.wind.speed * 3.6);
-
- 
-
-  
-
   return {
-    weather,
+    weather: {
+      ...weather, // Spread existing properties
+      weather: Array.isArray(weather.weather) && weather.weather.length > 0 
+        ? weather.weather[0] // Take the first element if it's an array
+        : { id: 0, main: '', description: '', icon: '' }, // Default fallback
+
+      main: {
+        ...weather.main,
+        temp: weather.main?.temp ?? 0,
+        feels_like: weather.main?.feels_like ?? 0,
+        temp_max: weather.main?.temp_max ?? 0,
+        temp_min: weather.main?.temp_min ?? 0,
+      },
+      wind: {
+        ...weather.wind,
+        speed: weather.wind?.speed ? Math.round(weather.wind.speed * 3.6) : 0, // Prevent undefined access
+      },
+    },
     forecast,
   };
 };

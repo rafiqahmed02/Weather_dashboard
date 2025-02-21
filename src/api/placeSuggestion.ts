@@ -1,19 +1,18 @@
 export const fetchCities = async (search: string) => {
-  const url = `https://places-dsn.algolia.net/1/places/query`;
-  const res = await (
-    await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify({
-        query: search,
-        type: 'city',
-        language: 'en',
-      }),
-    })
-  ).json();
+  const cities = [
+    { name: "Delhi", country: "India" },
+    { name: "Mumbai", country: "India" },
+    { name: "Bangalore", country: "India" },
+    { name: "Chennai", country: "India" },
+    { name: "Kolkata", country: "India" },
+    { name: "Hyderabad", country: "India" },
+    { name: "Pune", country: "India" },
+    { name: "Ahmedabad", country: "India" },
+    { name: "Jaipur", country: "India" },
+    { name: "Lucknow", country: "India" },
+  ];
 
-  return res.hits
-    .filter((item: any) => item.is_city)
-    .map((i: any) => {
-      return i.locale_names[0] + ', ' + i.country;
-    });
+  return cities
+    .filter((city) => city.name.toLowerCase().includes(search.toLowerCase()))
+    .map((city) => `${city.name}, ${city.country}`);
 };

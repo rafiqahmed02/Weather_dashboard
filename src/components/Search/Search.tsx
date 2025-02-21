@@ -37,10 +37,20 @@ const Search: React.FC = () => {
       })
     );
   };
+  const onSuggestionClick = (city: string) => {
+    setSearchTerm(city); // Updates the search bar
+    setShowSuggestions(false); // Hides suggestions
+  };
   return (
     <SearchElement>
       <SearchIcon />
-      <DebounceInput element={SearchInput} debounceTimeout={300} onChange={onSearchInputChanged} placeholder="Search for location" />
+      <DebounceInput
+  element={SearchInput}
+  debounceTimeout={300}
+  onChange={onSearchInputChanged}
+  placeholder="Search for location"
+  value={searchTerm} // Ensure it updates with the selected city
+/>
       <LocationButton
         onClick={() => {
           if (navigator.geolocation) {
@@ -56,12 +66,11 @@ const Search: React.FC = () => {
         <SearchResult ref={suggestionRef}>
           {suggestions?.slice(0, 6)?.map((s, i) => (
             <Suggestion
-              key={i}
-              label={s}
-              hideSuggestionFn={() => {
-                setShowSuggestions(false);
-              }}
-            />
+            key={i}
+            label={s}
+            hideSuggestionFn={() => setShowSuggestions(false)}
+            onSelect={() => onSuggestionClick(s)}
+          />
           ))}
         </SearchResult>
       )}
