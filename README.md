@@ -1,29 +1,19 @@
 # React Weather
 
-<img src="../react-weather-app-master/public/Waather_App1.png" width="400">
-<img src="../react-weather-app-master//public//Weather_App.png" width="400">
+<img src="https://github.com/user-attachments/assets/ff7e678d-8114-415d-a475-f9b7576cfb92" width="400">
+<img src="https://github.com/user-attachments/assets/c77c7de5-f275-49a4-8201-30ff9aeba2c8" width="400">
 
 
 ## Tech Stack
 
 **React, Typescript, Redux, StyledComponents**
 
-## Features
-
-- **Weather forecast for any city or place**
-- **Extended 7 days forecast**
-- **Find user location weather by utilizing GeolocationAPI**
-- **One-click Celcius to Fahrenheit conversion and vice versa**
-- **Dark Mode**
 
 ## Getting Started
 
-First you need an API key from OpenWeatherMap, you can get one by creating an account on their website.
-After you got your API key, create a **.env** file at root directory of project, copy the line below to the file and replace YOUR_KEY with your OpenWeatherMap API Key.
+This project uses hardcoded weather data as a free OpenWeatherMap API key is not available.
 
-```
-REACT_APP_WEATHER_API_KEY=YOUR_KEY
-```
+Open any code editor and get started.
 
 Finally clone this repository, install dependencies and run the local server
 
